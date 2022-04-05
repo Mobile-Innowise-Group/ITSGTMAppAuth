@@ -16,21 +16,15 @@
         limitations under the License.
  */
 
-#import "GTMAppAuth/Sources/Public/GTMAppAuth/GTMOAuth2KeychainCompatibility.h"
+#import "GTMOAuth2KeychainCompatibility.h"
 
-#import "GTMAppAuth/Sources/Public/GTMAppAuth/GTMAppAuthFetcherAuthorization.h"
-#import "GTMAppAuth/Sources/Public/GTMAppAuth/GTMKeychain.h"
-
-#if SWIFT_PACKAGE || GTMAPPAUTH_USE_MODULAR_IMPORT
-@import AppAuthCore;
-@import GTMSessionFetcherCore;
-#elif GTMAPPAUTH_USER_IMPORTS
-#import "AppAuthCore.h"
-#import "GTMSessionFetcher.h"
-#else
+#ifndef GTMAPPAUTH_USER_IMPORTS
 #import <AppAuth/AppAuthCore.h>
-#import <GTMSessionFetcher/GTMSessionFetcher.h>
-#endif
+#else // GTMAPPAUTH_USER_IMPORTS
+#import "AppAuthCore.h"
+#endif // GTMAPPAUTH_USER_IMPORTS
+
+#import "GTMKeychain.h"
 
 // standard OAuth keys
 static NSString *const kOAuth2AccessTokenKey = @"access_token";

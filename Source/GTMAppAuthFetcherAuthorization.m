@@ -16,17 +16,15 @@
         limitations under the License.
  */
 
-#import "GTMAppAuth/Sources/Public/GTMAppAuth/GTMAppAuthFetcherAuthorization.h"
+#import "GTMAppAuthFetcherAuthorization.h"
 
-#if SWIFT_PACKAGE || GTMAPPAUTH_USE_MODULAR_IMPORT
-@import AppAuthCore;
-#elif GTMAPPAUTH_USER_IMPORTS
-#import "AppAuthCore.h"
-#else
+#ifndef GTMAPPAUTH_USER_IMPORTS
 #import <AppAuth/AppAuthCore.h>
-#endif
+#else // GTMAPPAUTH_USER_IMPORTS
+#import "AppAuthCore.h"
+#endif // GTMAPPAUTH_USER_IMPORTS
 
-#define GTMOAuth2AssertValidSelector GTMSessionFetcherAssertValidSelector
+#define GTMOAuth2AssertValidSelector GTMBridgeAssertValidSelector
 
 /*! @brief Provides a template implementation for init-family methods which have been marked as
         NS_UNAVILABLE. Stops the compiler from giving a warning when it's the super class'
@@ -196,7 +194,7 @@ NSString *const GTMAppAuthFetcherAuthorizationErrorRequestKey = @"request";
 #if !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
 + (OIDServiceConfiguration *)configurationForGoogle {
   NSURL *authorizationEndpoint =
-      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth?prompt=select_account"];
+      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
   NSURL *tokenEndpoint =
       [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
 

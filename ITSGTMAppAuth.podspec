@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ITSGTMAppAuth"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "Authorize GTM Session Fetcher requests with AppAuth via GTMAppAuth"
 
   s.description  = <<-DESC
@@ -13,36 +13,34 @@ requests with AppAuth.
 
                    DESC
 
+  # Note: While tvOS is specified here, only iOS and macOS have support for
+  #       obtaining authorization from the user. You can use the classes of
+  #       GTMAppAuth with tokens obtained out of band to authorize requests
+  #       on tvOS.
+  s.platforms    = { :ios => "7.0", :osx => "10.11", :tvos => "9.0" }
+
   s.homepage     = "https://github.com/Mobile-Innowise-Group"
-  s.license      = { :type => 'Apache', :file => 'LICENSE' }
+  s.license      = "Apache License, Version 2.0"
   s.author       = "Innowise group"
 
-  s.source       = { :git => "https://github.com/Mobile-Innowise-Group/ITSGTMAppAuth.git", :tag => "0.0.1" }
-  s.prefix_header_file = false
-  s.source_files = "GTMAppAuth/Sources/*.{h,m}",
-                   "GTMAppAuth/Sources/Public/GTMAppAuth/*.h"
-  s.public_header_files = "GTMAppAuth/Sources/Public/GTMAppAuth/*.h"
+  s.source       = { :git => "https://github.com/Mobile-Innowise-Group/ITSGTMAppAuth.git", :tag => "0.0.2" }
+
+  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  s.ios.source_files = "GTMAppAuth/Sources/GTMOAuth2KeychainCompatibility/*.{h,m}",
-                       "GTMAppAuth/Sources/iOS/GTMKeychain_iOS.m"
-  s.ios.deployment_target = "9.0"
+  s.ios.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}",
+                       "Source/iOS/**/*.{h,m}"
+  s.ios.deployment_target = "7.0"
+  s.ios.framework    = "SafariServices"
 
-  s.osx.source_files = "GTMAppAuth/Sources/GTMOAuth2KeychainCompatibility/*.{h,m}",
-                       "GTMAppAuth/Sources/macOS/GTMKeychain_macOS.m"
-  s.osx.deployment_target = '10.12'
+  s.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}",
+                       "Source/macOS/**/*.{h,m}"
+  s.osx.deployment_target = '10.11'
 
-  s.tvos.source_files = "GTMAppAuth/Sources/iOS/GTMKeychain_iOS.m"
+  s.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
   s.tvos.deployment_target = '9.0'
 
-  s.watchos.source_files = "GTMAppAuth/Sources/iOS/GTMKeychain_iOS.m"
-  s.watchos.deployment_target = '6.0'
-
-  s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}"'
-  }
-
-  s.framework = 'Security'
-  s.dependency 'GTMSessionFetcher/Core', '~> 1.5'
-  s.dependency 'AppAuth/Core', '~> 1.4'
+  s.frameworks = 'Security', 'SystemConfiguration'
+  s.dependency 'GTMSessionFetcher', '~> 1.1'
+  s.dependency 'AppAuth/Core', '~> 1.0'
 end

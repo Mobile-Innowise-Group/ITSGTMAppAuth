@@ -16,14 +16,9 @@
         limitations under the License.
  */
 
-#import <TargetConditionals.h>
-
-#if TARGET_OS_OSX
-
-#import "GTMAppAuth/Sources/Public/GTMAppAuth/GTMKeychain.h"
+#import "GTMKeychain.h"
 
 #import <Security/Security.h>
-#import <Foundation/Foundation.h>
 
 static const char *kKeychainAccountName = "OAuth";
 
@@ -40,7 +35,8 @@ static const char *kKeychainAccountName = "OAuth";
   // a keychain access permission dialog)
   NSString *prefKey = [self prefsKeyForName:keychainItemName];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:prefKey]) {
+  BOOL flag = [defaults boolForKey:prefKey];
+  if (!flag) {
     return nil;
   }
 
@@ -77,7 +73,8 @@ static const char *kKeychainAccountName = "OAuth";
   // a keychain access permission dialog)
   NSString *prefKey = [self prefsKeyForName:keychainItemName];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:prefKey]) {
+  BOOL flag = [defaults boolForKey:prefKey];
+  if (!flag) {
     return nil;
   }
 
@@ -106,15 +103,6 @@ static const char *kKeychainAccountName = "OAuth";
 }
 
 + (BOOL)removePasswordFromKeychainForName:(NSString *)keychainItemName {
-  // before accessing the keychain, check preferences to verify that we've
-  // previously saved a token to the keychain (so we don't needlessly raise
-  // a keychain access permission dialog)
-  NSString *prefKey = [self prefsKeyForName:keychainItemName];
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:prefKey]) {
-    return YES;
-  }
-
   SecKeychainRef defaultKeychain = NULL;
   SecKeychainItemRef itemRef = NULL;
   const char *utf8ServiceName = [keychainItemName UTF8String];
@@ -135,6 +123,8 @@ static const char *kKeychainAccountName = "OAuth";
     CFRelease(itemRef);
 
     // remove our preference key
+    NSString *prefKey = [self prefsKeyForName:keychainItemName];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults removeObjectForKey:prefKey];
 
     return (err == noErr);
@@ -142,9 +132,6 @@ static const char *kKeychainAccountName = "OAuth";
 }
 
 + (BOOL)savePasswordToKeychainForName:(NSString *)keychainItemName password:(NSString *)password {
-  // Remove any existing entry to prevent the keychain error: errSecDuplicateItem.
-  [self removePasswordFromKeychainForName:keychainItemName];
-
   SecKeychainRef defaultKeychain = NULL;
   SecKeychainItemRef *dontWantItemRef= NULL;
   const char *utf8ServiceName = [keychainItemName UTF8String];
@@ -169,9 +156,6 @@ static const char *kKeychainAccountName = "OAuth";
 
 + (BOOL)savePasswordDataToKeychainForName:(NSString *)keychainItemName
                              passwordData:(NSData *)passwordData {
-  // Remove any existing entry to prevent the keychain error: errSecDuplicateItem.
-  [self removePasswordFromKeychainForName:keychainItemName];
-
   SecKeychainRef defaultKeychain = NULL;
   SecKeychainItemRef *dontWantItemRef= NULL;
   const char *utf8ServiceName = [keychainItemName UTF8String];
@@ -196,5 +180,3 @@ static const char *kKeychainAccountName = "OAuth";
 }
 
 @end
-
-#endif // TARGET_OS_OSX
