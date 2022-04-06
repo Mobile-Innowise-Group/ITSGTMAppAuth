@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ITSGTMAppAuth"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "Authorize GTM Session Fetcher requests with AppAuth via GTMAppAuth"
 
   s.description  = <<-DESC
@@ -23,7 +23,7 @@ requests with AppAuth.
   s.license      = "Apache License, Version 2.0"
   s.author       = "Innowise group"
 
-  s.source       = { :git => "https://github.com/Mobile-Innowise-Group/ITSGTMAppAuth.git", :tag => "0.0.3" }
+  s.source       = { :git => "https://github.com/Mobile-Innowise-Group/ITSGTMAppAuth.git", :tag => "0.0.4" }
 
   s.source_files = "Source/*.{h,m}"
   s.requires_arc = true

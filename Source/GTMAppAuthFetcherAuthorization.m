@@ -194,7 +194,7 @@ NSString *const GTMAppAuthFetcherAuthorizationErrorRequestKey = @"request";
 #if !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
 + (OIDServiceConfiguration *)configurationForGoogle {
   NSURL *authorizationEndpoint =
-      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
+      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth?prompt=select_account"];
   NSURL *tokenEndpoint =
       [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
 
